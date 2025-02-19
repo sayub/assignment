@@ -3,6 +3,7 @@ package com.assignment.android.ui.list
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.assignment.android.domain.ListRepository
+import com.assignment.android.model.Item
 import com.assignment.android.ui.ScreenState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -23,7 +24,9 @@ class ListViewModel @Inject constructor(val listRepository: ListRepository) : Vi
 
         try {
             viewModelScope.launch {
-                val list = listRepository.getList()
+                val list = listRepository.getList()?.
+                filter { it.name != null && it.name != "" }?.
+                sortedWith(compareBy<Item> { it.listId }.thenBy { it.name })
                 _listUiState.value = ScreenState.Success(list)
             }
         } catch (e: HttpException) {
