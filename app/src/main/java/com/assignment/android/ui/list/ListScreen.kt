@@ -14,6 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.assignment.android.model.Item
 import com.assignment.android.ui.ScreenState
@@ -42,39 +43,40 @@ fun ListScreen(
 @Composable
 fun ItemList(itemsList: List<Item>, modifier: Modifier = Modifier) {
     Column (modifier = modifier.padding(8.dp)) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(Color.LightGray) // Background to distinguish header
+                .padding(vertical = 8.dp, horizontal = 8.dp),
+            horizontalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            Text(
+                text = "List ID",
+                fontWeight = FontWeight.Bold,
+                modifier = Modifier.weight(1f)
+            )
+            Text(
+                text = "ID",
+                fontWeight = FontWeight.Bold,
+                modifier = Modifier.weight(1f)
+            )
+            Text(
+                text = "Name",
+                fontWeight = FontWeight.Bold,
+                modifier = Modifier.weight(1f)
+            )
+        }
+
         LazyColumn {
-            item {
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .background(Color.LightGray) // Background to distinguish header
-                        .padding(vertical = 8.dp, horizontal = 8.dp),
-                    horizontalArrangement = Arrangement.spacedBy(8.dp)
-                ) {
-                    Text(
-                        text = "ID",
-                        fontWeight = FontWeight.Bold,
-                        modifier = Modifier.weight(1f)
-                    )
-                    Text(
-                        text = "List ID",
-                        fontWeight = FontWeight.Bold,
-                        modifier = Modifier.weight(1f)
-                    )
-                    Text(
-                        text = "Name",
-                        fontWeight = FontWeight.Bold,
-                        modifier = Modifier.weight(1f)
-                    )
-                }
-            }
             items(itemsList.size) { index ->
                 Row {
                     Column(modifier = Modifier.weight(1f).padding(horizontal = 8.dp)) {
-                        Text(itemsList[index].id.toString())
+                        if (itemsList[index].listId.toString() != "null") {
+                            Text(itemsList[index].listId.toString(), fontWeight = FontWeight.ExtraBold, fontSize = 18.sp)
+                        }
                     }
                     Column(modifier = Modifier.weight(1f).padding(horizontal = 8.dp)) {
-                        Text(itemsList[index].listId.toString())
+                        Text(itemsList[index].id.toString())
                     }
                     Column(modifier = Modifier.weight(1f).padding(horizontal = 8.dp)) {
                         Text(itemsList[index].name.toString())

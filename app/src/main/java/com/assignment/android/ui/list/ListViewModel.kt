@@ -24,9 +24,18 @@ class ListViewModel @Inject constructor(val listRepository: ListRepository) : Vi
 
         try {
             viewModelScope.launch {
-                val list = listRepository.getList()?.
-                filter { it.name != null && it.name != "" }?.
-                sortedWith(compareBy<Item> { it.listId }.thenBy { it.name })
+                val originalList = listRepository.getList()?.filter { it.name != null && it.name != "" }
+                ?.sortedWith(compareBy<Item> { it.listId }.thenBy { it.name })
+
+                val list = originalList?.mapIndexed { index, item ->
+                    // Check if current item listId is the same as previous one
+                    if (index > 0 && item.listId == originalList[index - 1].listId) {
+                        // Set the listId to null if the current listId is the same as the previous one
+                        item.copy(listId = null)
+                    } else {
+                        item
+                    }
+                }
                 _listUiState.value = ScreenState.Success(list)
             }
         } catch (e: HttpException) {
