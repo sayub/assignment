@@ -43,44 +43,44 @@ fun ListScreen(
 
 @Composable
 fun ItemList(itemsList: List<Item>, modifier: Modifier = Modifier) {
-    LazyColumn(modifier = modifier.padding(8.dp)) {
-        item {
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .background(Color.LightGray) // Background to distinguish header
-                    .padding(vertical = 8.dp, horizontal = 8.dp),
-                horizontalArrangement = Arrangement.spacedBy(8.dp)
-            ) {
-                Text(
-                    text = "ID",
-                    fontWeight = FontWeight.Bold,
-                    modifier = Modifier.weight(1f)
-                )
-                Text(
-                    text = "List ID",
-                    fontWeight = FontWeight.Bold,
-                    modifier = Modifier.weight(1f)
-                )
-                Text(
-                    text = "Name",
-                    fontWeight = FontWeight.Bold,
-                    modifier = Modifier.weight(1f)
-                )
-            }
+    Column (modifier = modifier.padding(8.dp)) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(Color.LightGray) // Background to distinguish header
+                .padding(vertical = 8.dp, horizontal = 8.dp),
+            horizontalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            Text(
+                text = "ID",
+                fontWeight = FontWeight.Bold,
+                modifier = Modifier.weight(1f)
+            )
+            Text(
+                text = "List ID",
+                fontWeight = FontWeight.Bold,
+                modifier = Modifier.weight(1f)
+            )
+            Text(
+                text = "Name",
+                fontWeight = FontWeight.Bold,
+                modifier = Modifier.weight(1f)
+            )
         }
-        items(itemsList.size) { index ->
-           Row {
-               Column(modifier = Modifier.weight(1f).padding(horizontal = 8.dp)) {
-                   Text(itemsList[index].id.toString())
-               }
-               Column(modifier = Modifier.weight(1f).padding(horizontal = 8.dp)) {
-                   Text(itemsList[index].listId.toString())
-               }
-               Column(modifier = Modifier.weight(1f).padding(horizontal = 8.dp)) {
-                   Text(itemsList[index].name.toString())
-               }
-           }
+        LazyColumn {
+            items(itemsList.size) { index ->
+                Row {
+                    Column(modifier = Modifier.weight(1f).padding(horizontal = 8.dp)) {
+                        Text(itemsList[index].id.toString())
+                    }
+                    Column(modifier = Modifier.weight(1f).padding(horizontal = 8.dp)) {
+                        Text(itemsList[index].listId.toString())
+                    }
+                    Column(modifier = Modifier.weight(1f).padding(horizontal = 8.dp)) {
+                        Text(itemsList[index].name.toString())
+                    }
+                }
+            }
         }
     }
 }
