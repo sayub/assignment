@@ -25,7 +25,9 @@ class ListViewModel @Inject constructor(val listRepository: ListRepository) : Vi
         try {
             viewModelScope.launch {
                 val originalList = listRepository.getList()?.filter { it.name != null && it.name != "" }
-                ?.sortedWith(compareBy<Item> { it.listId }.thenBy { it.name })
+                    ?.sortedWith(compareBy<Item> { it.listId }
+                        .thenBy { extractNumberFromName(it.name ?: "0") })
+
 
                 val list = originalList?.mapIndexed { index, item ->
                     // Check if current item listId is the same as previous one
@@ -43,5 +45,11 @@ class ListViewModel @Inject constructor(val listRepository: ListRepository) : Vi
         } catch (e: Exception) {
             _listUiState.value = ScreenState.Error(message = e.message ?: "")
         }
+    }
+
+    fun extractNumberFromName(name: String): Int {
+        // Extracts the first sequence of digits from the name (e.g., "item 929" -> 929)
+        val matchResult = Regex("\\d+").find(name)
+        return matchResult?.value?.toIntOrNull() ?: Int.MAX_VALUE // Default to Int.MAX_VALUE if no number found
     }
 }
